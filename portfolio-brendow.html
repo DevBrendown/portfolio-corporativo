@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfólio Corporativo - Brendow Rodrigues</title>
+<meta name="description" content="Portfólio Corporativo - Brendow Rodrigues: planilhas, automações com Apps Script, gráficos e dashboards web.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<!--
+  ============================================================
+  COMO USAR
+  ============================================================
+  Deixe este arquivo na mesma pasta que as imagens:
+
+    portfolio-brendow.html
+    cv/curriculo-brendow.pdf          <- seu currículo
+    img/foto.jpg                      <- sua foto
+    img/certificados/cert-1.jpg       <- certificados (veja a lista no <script>)
+    img/certificados/cert-2.jpg
+    ...
+
+  Para trocar nomes de arquivos, títulos, datas e links,
+  edite o bloco "CONFIGURAÇÃO" no final deste arquivo.
+  Enquanto uma imagem não existir, aparece um espaço reservado.
+  ============================================================
+-->
+
+<style>
+  :root {
+    --navy: #0F2A43;
+    --navy-2: #173A5C;
+    --blue: #2563EB;
+    --blue-dark: #1D4ED8;
+    --mist: #F4F6F8;
+    --white: #FFFFFF;
+    --line: #D9E0E7;
+    --ink: #14283B;
+    --muted: #5B6B7B;
+    --radius: 14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0;
+    font-family: "Exo 2", sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--white);
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { line-height: 1.15; margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+  p { margin: 0; }
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+
+  .wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+  section { padding: 88px 0; }
+  .section-title { font-size: clamp(1.7rem, 3vw, 2.3rem); margin-bottom: 12px; }
+  .section-lead { color: var(--muted); max-width: 60ch; margin-bottom: 40px; }
+
+  /* ---------- Botões ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 24px; border-radius: 10px;
+    font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+    border: 2px solid transparent; transition: background .2s, border-color .2s, color .2s;
+  }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-dark); }
+  .btn-ghost { border-color: rgba(255,255,255,.45); color: var(--white); }
+  .btn-ghost:hover { background: rgba(255,255,255,.1); border-color: var(--white); }
+
+  /* ---------- Menu ---------- */
+  header.top {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--navy); color: var(--white);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: 20px; }
+  .brand { font-weight: 700; font-size: 1.15rem; text-decoration: none; }
+  nav ul { list-style: none; display: flex; gap: 6px; margin: 0; padding: 0; }
+  nav a { display: block; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: .95rem; opacity: .85; }
+  nav a:hover { background: rgba(255,255,255,.1); opacity: 1; }
+
+  /* ---------- Início ---------- */
+  #inicio { background: var(--navy); color: var(--white); padding: 72px 0 96px; }
+  .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
+  .hero h1 { font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 800; margin-bottom: 14px; }
+  .hero .role { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 500; color: #9FC0E6; margin-bottom: 20px; }
+  .hero .pitch { max-width: 52ch; color: #D6E2EF; margin-bottom: 32px; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+  .photo-frame { position: relative; justify-self: center; width: min(380px, 100%); aspect-ratio: 4 / 5; }
+  .photo-frame::before {
+    content: ""; position: absolute; inset: 18px -18px -18px 18px;
+    background: var(--navy-2); border-radius: 24px;
+  }
+  .photo-box {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 24px; overflow: hidden;
+    background: #21496F; border: 3px solid rgba(255,255,255,.18);
+    display: grid; place-items: center;
+  }
+  .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Espaço reservado quando a imagem não existe */
+  .ph-note {
+    display: none; text-align: center; padding: 20px;
+    color: #BBD0E6; font-size: .95rem; line-height: 1.45;
+  }
+  .ph-note strong { display: block; font-size: 2.6rem; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+  .missing > img { display: none; }
+  .missing > .ph-note { display: block; }
+
+  /* ---------- Sobre ---------- */
+  #sobre { background: var(--white); }
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+  .about p + p { margin-top: 16px; }
+  .about ul { margin: 16px 0 0; padding-left: 20px; }
+  .about li { margin-bottom: 6px; }
+  .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .skill {
+    background: var(--mist); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px;
+  }
+  .skill h3 { font-size: 1.05rem; margin-bottom: 8px; color: var(--navy); }
+  .skill p { font-size: .95rem; color: var(--muted); line-height: 1.5; }
+
+  /* ---------- Experiências ---------- */
+  #experiencias { background: var(--mist); }
+  .timeline { list-style: none; margin: 0; padding: 0 0 0 28px; position: relative; max-width: 780px; }
+  .timeline::before { content: ""; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+  .job { position: relative; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 28px; }
+  .job + .job { margin-top: 24px; }
+  .job::before {
+    content: ""; position: absolute; left: -28px; top: 32px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--blue); border: 3px solid var(--mist); box-shadow: 0 0 0 2px var(--blue);
+  }
+  .job h3 { font-size: 1.25rem; color: var(--navy); }
+  .job .meta { color: var(--muted); font-size: .95rem; margin: 6px 0 14px; font-weight: 500; }
+  .job ul { margin: 0; padding-left: 20px; }
+  .job li { margin-bottom: 6px; }
+
+  /* ---------- Certificados ---------- */
+  #certificados { background: var(--white); }
+  .certs { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
+  .cert-list {
+    position: relative;           /* necessário para calcular a rolagem só da lista */
+    max-height: 560px; overflow-y: auto;
+    padding: 0 8px 4px 2px;
+    background: var(--white);
+  }
+  .cert-block { display: flex; flex-direction: column; gap: 8px; padding-bottom: 14px; }
+  /* Títulos fixos: ficam no topo da lista enquanto os itens rolam por baixo */
+  .cert-group {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--white);
+    padding: 8px 4px 10px; margin: 0;
+    font-size: .95rem; font-weight: 700; color: var(--navy);
+    border-bottom: 1px solid var(--line);
+  }
+  .cert-item {
+    display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center;
+    width: 100%; text-align: left; font: inherit;
+    background: var(--white); border: 1.5px solid var(--line); border-radius: 12px;
+    padding: 12px 14px; cursor: pointer; color: var(--ink);
+    transition: border-color .2s, background .2s;
+  }
+  .cert-item:hover { border-color: #9DB4CC; }
+  .cert-item .mark {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--line); background: var(--white);
+    transition: border-color .2s, background .2s, box-shadow .2s;
+  }
+  .cert-item .ct { display: block; font-weight: 600; font-size: .98rem; line-height: 1.3; }
+  .cert-item .ci { display: block; font-size: .85rem; color: var(--muted); }
+  .cert-item .badge {
+    font-size: .75rem; font-weight: 700; color: var(--blue-dark);
+    background: #E3ECFE; padding: 3px 10px; border-radius: 999px;
+  }
+  .cert-item[aria-selected="true"] { border-color: var(--blue); background: #F1F6FF; }
+  .cert-item[aria-selected="true"] .mark { border-color: var(--blue); background: var(--blue); box-shadow: inset 0 0 0 3px #F1F6FF; }
+
+  .stage { background: var(--navy); border-radius: 20px; padding: 18px; color: var(--white); }
+  .stage-img {
+    position: relative; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden;
+    background: #21496F; display: grid; place-items: center;
+  }
+  .stage-img img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+  .stage-img.missing { background: #21496F; }
+  .stage-info { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 14px; padding: 18px 6px 4px; }
+  .stage-info h3 { font-size: 1.25rem; }
+  .stage-info p { color: #B9CDE3; font-size: .95rem; margin-top: 4px; }
+  .stage-nav { display: flex; gap: 8px; }
+  .icon-btn {
+    width: 42px; height: 42px; border-radius: 10px; cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,.35); background: transparent; color: var(--white);
+    display: grid; place-items: center; transition: background .2s;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,.12); }
+  .icon-btn svg { width: 20px; height: 20px; }
+  .progress { height: 3px; background: rgba(255,255,255,.15); border-radius: 3px; margin-top: 16px; overflow: hidden; }
+  .progress i { display: block; height: 100%; width: 0; background: #7FB0FF; }
+  .progress i.run { animation: fill var(--dur, 5s) linear forwards; }
+  .progress i.paused { animation-play-state: paused; }
+  @keyframes fill { from { width: 0; } to { width: 100%; } }
+
+  /* ---------- Contato ---------- */
+  #contato { background: var(--navy); color: var(--white); }
+  #contato .section-lead { color: #BBD0E6; }
+  .contact-list { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 32px; }
+  .contact-list a {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 500;
+    border: 1.5px solid rgba(255,255,255,.3);
+  }
+  .contact-list a:hover { background: rgba(255,255,255,.1); border-color: var(--white); }
+
+  footer { background: #0A1E31; color: #8FA6BD; text-align: center; padding: 22px 0; font-size: .9rem; }
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width: 900px) {
+    section { padding: 64px 0; }
+    .hero, .about, .certs { grid-template-columns: 1fr; }
+    .hero { gap: 44px; }
+    .photo-frame { order: -1; width: min(300px, 80%); }
+    .cert-list { max-height: 320px; }
+  }
+  @media (max-width: 640px) {
+    nav ul { gap: 0; }
+    nav a { padding: 8px 8px; font-size: .85rem; }
+    .brand { display: none; }
+    header.top .wrap { justify-content: center; }
+    .skills { grid-template-columns: 1fr; }
+    .job { padding: 22px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Brendow Rodrigues</a>
+    <nav aria-label="Menu principal">
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#sobre">Sobre mim</a></li>
+        <li><a href="#experiencias">Experiências</a></li>
+        <li><a href="#certificados">Certificados</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== INÍCIO ===== -->
+  <section id="inicio">
+    <div class="wrap hero">
+      <div>
+        <h1>Brendow Rodrigues</h1>
+        <p class="role">Automação de planilhas, dashboards e desenvolvimento web</p>
+        <p class="pitch">Transformo dados em decisões: planilhas inteligentes, automações com Apps Script e dashboards web para acompanhar indicadores em tempo real.</p>
+        <div class="actions">
+          <a class="btn btn-primary" id="btn-cv" href="cv/curriculo-brendow.pdf" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+            Baixar currículo
+          </a>
+          <a class="btn btn-ghost" href="#experiencias">Ver experiências</a>
+        </div>
+      </div>
+
+      <div class="photo-frame">
+        <div class="photo-box" id="photo-box">
+          <img id="foto" src="img/foto.jpg" alt="Foto de Brendow">
+          <div class="ph-note"><strong>B</strong>Coloque sua foto em<br><code>img/foto.jpg</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOBRE ===== -->
+  <section id="sobre">
+    <div class="wrap about">
+      <div>
+        <h2 class="section-title">Quem sou eu</h2>
+        <p>Sou o Brendow Rodrigues, tenho 18 anos e trabalho com dados, automação e desenvolvimento web.</p>
+        <p>Tenho experiência em:</p>
+        <ul>
+          <li>planilhas eletrônicas avançadas;</li>
+          <li>automações com Google Apps Script;</li>
+          <li>gráficos e relatórios visuais;</li>
+          <li>dashboards web externos, ligados às planilhas.</li>
+        </ul>
+      </div>
+      <div class="skills" aria-label="Competências">
+        <div class="skill"><h3>Planilhas</h3><p>Fórmulas avançadas, tabelas dinâmicas, tratamento de dados e indicadores.</p></div>
+        <div class="skill"><h3>Automação</h3><p>Google Apps Script e integração entre planilhas e sistemas.</p></div>
+        <div class="skill"><h3>Visualização de dados</h3><p>Gráficos, relatórios e painéis de indicadores de desempenho.</p></div>
+        <div class="skill"><h3>Desenvolvimento web</h3><p>Dashboards e sistemas web com HTML, CSS e JavaScript.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPERIÊNCIAS ===== -->
+  <section id="experiencias">
+    <div class="wrap">
+      <h2 class="section-title">Experiências</h2>
+      <p class="section-lead">Da mais recente para a mais antiga.</p>
+
+      <ol class="timeline">
+        <li class="job">
+          <h3>Jovem Aprendiz | Central de Inteligência Operacional</h3>
+          <p class="meta">Eucatur &nbsp;•&nbsp; Out/2025 – Nov/2026</p>
+          <ul>
+            <li>Criação de planilhas eletrônicas;</li>
+            <li>Desenvolvimento de sistemas web e dashboards de informações;</li>
+            <li>Elaboração de relatórios e indicadores de desempenho.</li>
+          </ul>
+        </li>
+        <li class="job">
+          <h3>Jovem Aprendiz | Gestão de Relacionamento com Clientes</h3>
+          <p class="meta">Eucatur &nbsp;•&nbsp; Dez/2024 – Out/2025</p>
+          <ul>
+            <li>Lançamento de notas fiscais;</li>
+            <li>Organização de documentos e informações;</li>
+            <li>Prestação de serviços computacionais, alimentando base de dados e elaborando estatísticas.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== CERTIFICADOS ===== -->
+  <section id="certificados">
+    <div class="wrap">
+      <h2 class="section-title">Certificados</h2>
+      <p class="section-lead">Escolha um certificado na lista para ver a imagem. Eles também passam sozinhos a cada poucos segundos.</p>
+
+      <div class="certs">
+        <div class="cert-list" id="cert-list" role="listbox" aria-label="Lista de certificados"></div>
+
+        <div class="stage" id="stage">
+          <div class="stage-img" id="stage-img">
+            <img id="stage-photo" src="" alt="">
+            <div class="ph-note"><strong>Certificado</strong><span id="stage-hint"></span></div>
+          </div>
+          <div class="stage-info">
+            <div>
+              <h3 id="stage-title"></h3>
+              <p id="stage-meta"></p>
+            </div>
+            <div class="stage-nav">
+              <button class="icon-btn" id="prev" aria-label="Certificado anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button class="icon-btn" id="toggle" aria-label="Pausar passagem automática">
+                <svg id="ico-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                <svg id="ico-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="icon-btn" id="next" aria-label="Próximo certificado">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTATO ===== -->
+  <section id="contato">
+    <div class="wrap">
+      <h2 class="section-title">Contato</h2>
+      <p class="section-lead">Quer conversar sobre um projeto ou uma oportunidade? Fale comigo.</p>
+      <div class="contact-list" id="contact-list"></div>
+      <a class="btn btn-primary" id="btn-cv-2" href="cv/curriculo-brendow.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+        Baixar currículo
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 - 2030 Brendow Rodrigues. Todos os direitos reservados.</footer>
+
+<script>
+/* ============================================================
+   CONFIGURAÇÃO: edite aqui
+   ============================================================ */
+const CONFIG = {
+  foto: "img/foto.png",
+  cv:   "cv/curriculo-brendow.pdf",
+
+  // Troque os textos e os nomes dos arquivos de imagem.
+  // featured: true = aparece no grupo "Principais", com selo "Destaque".
+  certificados: [
+    { titulo: "Formação em Programação e Desenvolvimento Web", instituicao: "Alura", horas: "197 horas", data: "Ago/2025", img: "img/certificados/formacao-web-alura.jpg", featured: false },
+    { titulo: "Imersão Engenharia de Dados com IA", instituicao: "Alura", horas: "4 horas", data: "Set/2026", img: "img/certificados/engenharia-dados-ia.jpg", featured: false },
+    { titulo: "Imersão Dados com Python II", instituicao: "Alura", horas: "4 horas", data: "Fev/2026", img: "img/certificados/dados-python-ii.jpg", featured: false },
+    { titulo: "Tecnologias para o Setor de Transportes", instituicao: "SEST SENAT", horas: "20 horas", data: "Ago/2026", img: "img/certificados/tecnologias-transporte.jpg", featured: false },
+    { titulo: "Análise e Projeto de Software", instituicao: "IFRS | Plataforma Aprenda", horas: "20 horas", data: "Ago/2026", img: "img/certificados/analise-projeto-software.jpg", featured: false },
+    { titulo: "Imersão Engenharia de Software: Dev na Era da IA", instituicao: "Alura", horas: "4 horas", data: "Nov/2026", img: "img/certificados/engenharia-software-ia.jpg", featured: false },
+    { titulo: "Imersão Arquitetura Web com IA", instituicao: "Alura", horas: "4 horas", data: "Jul/2026", img: "img/certificados/arquitetura-web-ia.jpg", featured: false },
+    { titulo: "Introdução à Inovação Corporativa", instituicao: "AEVO", horas: "4 horas", data: "Fev/2026", img: "img/certificados/inovacao-aevo.jpg", featured: false },
+    { titulo: "Lei Geral de Proteção de Dados (LGPD)", instituicao: "Fundação Bradesco", horas: "2 horas", data: "Fev/2026", img: "img/certificados/lgpd-bradesco.jpg", featured: false },
+    { titulo: "Programa de Mentoria em Habilidades Digitais", instituicao: "FourWeeks", horas: "Programa de 4 meses", data: "Mar/2025", img: "img/certificados/mentoria-fourweeks.jpg", featured: false },
+    { titulo: "I Olimpíada Nacional de Inteligência Artificial (ONIA), 1ª fase", instituicao: "Comissão Organizadora da ONIA", horas: "", data: "Jan/2025", img: "img/certificados/onia.jpg", featured: false },
+    { titulo: "Conectando-se ao Mundo Profissional: Tecnologia, Currículo e Entrevista", instituicao: "Alura", horas: "3 horas", data: "Set/2023", img: "img/certificados/conectando-mundo-profissional.jpg", featured: false }
+  ],
+
+  // Segundos entre um certificado e o próximo
+  segundos: 5,
+
+  // Contatos: deixe "" para esconder o item
+  contatos: [
+    { rotulo: "E-mail",   link: "mailto:brendowrodrigues7@gmail.com" },
+    { rotulo: "LinkedIn", link: "https://www.linkedin.com/in/brendow-rodrigues-360b172a6/" },
+    { rotulo: "GitHub",   link: "https://github.com/DevBrendown" },
+    { rotulo: "Meu Portfólio Profissional", link: "https://devbrendown.vercel.app/" }
+  ]
+};
+
+/* ============================================================
+   Código (não precisa mexer daqui para baixo)
+   ============================================================ */
+
+// Foto e CV
+document.getElementById("foto").src = CONFIG.foto;
+document.getElementById("btn-cv").href = CONFIG.cv;
+document.getElementById("btn-cv-2").href = CONFIG.cv;
+
+// Espaço reservado quando a imagem não carrega
+function watchImage(img, box) {
+  img.addEventListener("error", () => box.classList.add("missing"));
+  img.addEventListener("load",  () => box.classList.remove("missing"));
+}
+watchImage(document.getElementById("foto"), document.getElementById("photo-box"));
+
+// Contatos
+const contactList = document.getElementById("contact-list");
+CONFIG.contatos.filter(c => c.link).forEach(c => {
+  const a = document.createElement("a");
+  a.href = c.link; a.textContent = c.rotulo;
+  if (c.link.startsWith("http")) { a.target = "_blank"; a.rel = "noopener"; }
+  contactList.appendChild(a);
+});
+if (!contactList.children.length) contactList.remove();
+
+// Certificados
+const certs = [...CONFIG.certificados].sort((a, b) => Number(b.featured) - Number(a.featured));
+const listEl   = document.getElementById("cert-list");
+const stageBox = document.getElementById("stage-img");
+const stageImg = document.getElementById("stage-photo");
+const bar      = document.getElementById("bar");
+const toggle   = document.getElementById("toggle");
+const reduce   = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+watchImage(stageImg, stageBox);
+document.documentElement.style.setProperty("--dur", CONFIG.segundos + "s");
+
+let current = 0, timer = null, userPaused = reduce, hoverPaused = false;
+const items = [];
+const hasBoth = certs.some(x => x.featured) && certs.some(x => !x.featured);
+const blocks = {};
+function blockFor(name) {
+  if (!blocks[name]) {
+    const wrap = document.createElement("div");
+    wrap.className = "cert-block";
+    if (hasBoth) {
+      const t = document.createElement("div");
+      t.className = "cert-group"; t.textContent = name;
+      wrap.appendChild(t);
+    }
+    listEl.appendChild(wrap);
+    blocks[name] = wrap;
+  }
+  return blocks[name];
+}
+
+certs.forEach((c, i) => {
+  const block = blockFor(c.featured ? "Principais" : "Outros certificados");
+
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "cert-item"; b.setAttribute("role", "option");
+  b.innerHTML =
+    '<span class="mark"></span>' +
+    '<span><span class="ct"></span><span class="ci"></span></span>' +
+    (c.featured ? '<span class="badge">Destaque</span>' : '<span></span>');
+  b.querySelector(".ct").textContent = c.titulo;
+  b.querySelector(".ci").textContent = c.instituicao;
+  b.addEventListener("click", () => { show(i); restart(); });
+  block.appendChild(b);
+  items.push(b);
+});
+
+function show(i) {
+  current = (i + certs.length) % certs.length;
+  const c = certs[current];
+  items.forEach((el, k) => el.setAttribute("aria-selected", String(k === current)));
+  stageBox.classList.remove("missing");
+  stageImg.src = c.img;
+  stageImg.alt = "Certificado: " + c.titulo;
+  document.getElementById("stage-hint").innerHTML = "<br>Coloque a imagem em<br><code></code>";
+  document.querySelector("#stage-hint code").textContent = c.img;
+  document.getElementById("stage-title").textContent = c.titulo;
+  document.getElementById("stage-meta").textContent =
+    [c.instituicao, c.horas, c.data].filter(Boolean).join("  •  ");
+  keepVisible(items[current]);
+}
+
+// Rola SOMENTE a lista (o scrollIntoView rolava a página inteira)
+function keepVisible(el) {
+  const sticky = listEl.querySelector(".cert-group");
+  const headH = sticky ? sticky.offsetHeight : 0;
+  const top = el.offsetTop;
+  const bottom = top + el.offsetHeight;
+  let target = null;
+  if (top < listEl.scrollTop + headH + 8) target = top - headH - 8;
+  else if (bottom > listEl.scrollTop + listEl.clientHeight - 8) target = bottom - listEl.clientHeight + 8;
+  if (target !== null) listEl.scrollTo({ top: Math.max(0, target), behavior: reduce ? "auto" : "smooth" });
+}
+
+function restartBar() {
+  bar.classList.remove("run", "paused");
+  void bar.offsetWidth;            // reinicia a animação
+  bar.classList.add("run");
+  if (userPaused || hoverPaused) bar.classList.add("paused");
+}
+function stop() { clearTimeout(timer); timer = null; }
+function schedule() {
+  stop();
+  if (userPaused || hoverPaused) return;
+  timer = setTimeout(() => { show(current + 1); restart(); }, CONFIG.segundos * 1000);
+}
+function restart() { restartBar(); schedule(); }
+
+document.getElementById("prev").addEventListener("click", () => { show(current - 1); restart(); });
+document.getElementById("next").addEventListener("click", () => { show(current + 1); restart(); });
+
+function syncToggle() {
+  document.getElementById("ico-pause").style.display = userPaused ? "none" : "";
+  document.getElementById("ico-play").style.display  = userPaused ? "" : "none";
+  toggle.setAttribute("aria-label", userPaused ? "Retomar passagem automática" : "Pausar passagem automática");
+}
+toggle.addEventListener("click", () => { userPaused = !userPaused; syncToggle(); restart(); });
+
+// Pausa enquanto o mouse está sobre a seção de certificados
+const certArea = document.querySelector(".certs");
+certArea.addEventListener("mouseenter", () => { hoverPaused = true;  stop(); bar.classList.add("paused"); });
+certArea.addEventListener("mouseleave", () => { hoverPaused = false; restart(); });
+
+syncToggle();
+show(0);
+restart();
+</script>
+</body>
+</html>
